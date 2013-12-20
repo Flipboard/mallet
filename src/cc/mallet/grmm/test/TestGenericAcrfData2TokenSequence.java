@@ -1,19 +1,8 @@
 package cc.mallet.grmm.test;
 
-import junit.framework.TestCase;
 import junit.framework.Test;
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.regex.Pattern;
-
-import cc.mallet.extract.StringTokenization;
-import cc.mallet.grmm.learning.GenericAcrfData2TokenSequence;
-import cc.mallet.pipe.Pipe;
-import cc.mallet.pipe.iterator.LineGroupIterator;
-import cc.mallet.types.*;
-import cc.mallet.types.tests.TestSerializable;
 
 
 /**
@@ -70,7 +59,7 @@ public class TestGenericAcrfData2TokenSequence extends TestCase {
 //    l2.addThruPipe (new LineGroupIterator (new StringReader (sampleData2), Pattern.compile ("^$"), true));
 //
 //    // the readResolve alphabet thing doesn't kick in on first deserialization
-//    assertTrue (p.getTargetAlphabet () != p2.getTargetAlphabet ());
+//    assertFalse (ObjectUtils.equal(p.getTargetAlphabet (), p2.getTargetAlphabet ()));
 //
 //    assertEquals (1, l1.size ());
 //    assertEquals (1, l2.size ());
