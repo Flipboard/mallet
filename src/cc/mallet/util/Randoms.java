@@ -19,6 +19,7 @@ import java.util.*;
 
 
 public class Randoms extends java.util.Random {
+    static final long serialVersionUID = 3815392533685324954L;
 
 	public Randoms (int seed) {
 		super(seed);
