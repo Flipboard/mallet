@@ -30,7 +30,7 @@ public class Randoms extends java.util.Random {
 	
 	/** Return random integer from Poission with parameter lambda.  
 	 * The mean of this distribution is lambda.  The variance is lambda. */
-  public synchronized int nextPoisson(double lambda) {
+  public int nextPoisson(double lambda) {
     int i,j,v=-1;
     double l=Math.exp(-lambda),p;
     p=1.0;
@@ -42,24 +42,24 @@ public class Randoms extends java.util.Random {
   }
 
   /** Return nextPoisson(1). */
-  public synchronized int nextPoisson() {
+  public int nextPoisson() {
     return nextPoisson(1);
   }
 
   /** Return a random boolean, equally likely to be true or false. */
-  public synchronized boolean nextBoolean() {
+  public boolean nextBoolean() {
     return (next(32) & 1 << 15) != 0;
   }
 
   /** Return a random boolean, with probability p of being true. */
-  public synchronized boolean nextBoolean(double p) {
+  public boolean nextBoolean(double p) {
     double u=nextUniform();
     if(u < p) return true;
     return false;
   }
 
   /** Return a random BitSet with "size" bits, each having probability p of being true. */
-  public synchronized BitSet nextBitSet (int size, double p)
+  public BitSet nextBitSet (int size, double p)
   {
     BitSet bs = new BitSet (size);
     for (int i = 0; i < size; i++)
@@ -71,19 +71,18 @@ public class Randoms extends java.util.Random {
 
   /** Return a random double in the range 0 to 1, inclusive, uniformly sampled from that range. 
    * The mean of this distribution is 0.5.  The variance is 1/12. */
-  public synchronized double nextUniform() {
-    long l = ((long)(next(26)) << 27) + next(27);
-    return l / (double)(1L << 53);
+  public double nextUniform() {
+    return nextDouble();
   }
 
   /** Return a random double in the range a to b, inclusive, uniformly sampled from that range.
    * The mean of this distribution is (b-a)/2.  The variance is (b-a)^2/12 */
-  public synchronized double nextUniform(double a,double b) {
+  public double nextUniform(double a,double b) {
     return a + (b-a)*nextUniform();
   }
 
 	/** Draw a single sample from multinomial "a". */
-	public synchronized int nextDiscrete (double[] a) {
+	public int nextDiscrete (double[] a) {
 		double b = 0, r = nextUniform();
 		for (int i = 0; i < a.length; i++) {
 			b += a[i];
@@ -95,7 +94,7 @@ public class Randoms extends java.util.Random {
 	}
 
 	/** draw a single sample from (unnormalized) multinomial "a", with normalizing factor "sum". */
-	public synchronized int nextDiscrete (double[] a, double sum) {
+	public int nextDiscrete (double[] a, double sum) {
 		double b = 0, r = nextUniform() * sum;
 		for (int i = 0; i < a.length; i++) {
 			b += a[i];
@@ -127,25 +126,25 @@ public class Randoms extends java.util.Random {
   }
 
   /** Return a random double drawn from a Gaussian distribution with mean m and variance s2. */
-  public synchronized double nextGaussian(double m,double s2) {
+  public double nextGaussian(double m,double s2) {
     return nextGaussian()*Math.sqrt(s2)+m;
   }
 
   // generate Gamma(1,1)
   // E(X)=1 ; Var(X)=1
   /** Return a random double drawn from a Gamma distribution with mean 1.0 and variance 1.0. */
-  public synchronized double nextGamma() {
+  public double nextGamma() {
     return nextGamma(1,1,0);
   }
 
   /** Return a random double drawn from a Gamma distribution with mean alpha and variance 1.0. */
-	public synchronized double nextGamma(double alpha) {
+	public double nextGamma(double alpha) {
     return nextGamma(alpha,1,0);
 	}
 
 	/* Return a sample from the Gamma distribution, with parameter IA */
 	/* From Numerical "Recipes in C", page 292 */
-	public synchronized double oldNextGamma (int ia)
+	public double oldNextGamma (int ia)
 	{
 		int j;
 		double am, e, s, v1, v2, x, y;
@@ -185,7 +184,7 @@ public class Randoms extends java.util.Random {
 
 	
 	/** Return a random double drawn from a Gamma distribution with mean alpha*beta and variance alpha*beta^2. */
-  public synchronized double nextGamma(double alpha, double beta) {
+  public double nextGamma(double alpha, double beta) {
     return nextGamma(alpha,beta,0);
   }
 
@@ -196,7 +195,7 @@ public class Randoms extends java.util.Random {
 	 *  in other words, beta is a "scale" parameter. An alternative 
 	 *  parameterization would use 1/beta, the "rate" parameter.
 	 */
-	public synchronized double nextGamma(double alpha, double beta, double lambda) {
+	public double nextGamma(double alpha, double beta, double lambda) {
 		double gamma=0;
 		if (alpha <= 0 || beta <= 0) {
 			throw new IllegalArgumentException ("alpha and beta must be strictly positive.");
@@ -276,38 +275,38 @@ public class Randoms extends java.util.Random {
 	}
 
 	/** Return a random double drawn from an Exponential distribution with mean 1 and variance 1. */
-  public synchronized double nextExp() {
+  public double nextExp() {
     return nextGamma(1,1,0);
   }
 
 	/** Return a random double drawn from an Exponential distribution with mean beta and variance beta^2. */
-  public synchronized double nextExp(double beta) {
+  public double nextExp(double beta) {
     return nextGamma(1,beta,0);
   }
 
 	/** Return a random double drawn from an Exponential distribution with mean beta+lambda and variance beta^2. */
-  public synchronized double nextExp(double beta,double lambda) {
+  public double nextExp(double beta,double lambda) {
     return nextGamma(1,beta,lambda);
   }
 
 	/** Return a random double drawn from an Chi-squarted distribution with mean 1 and variance 2. 
 	 * Equivalent to nextChiSq(1) */
-  public synchronized double nextChiSq() {
+  public double nextChiSq() {
     return nextGamma(0.5,2,0);
   }
 
   /** Return a random double drawn from an Chi-squared distribution with mean df and variance 2*df.  */
-  public synchronized double nextChiSq(int df) {
+  public double nextChiSq(int df) {
     return nextGamma(0.5*(double)df,2,0);
   }
 
   /** Return a random double drawn from an Chi-squared distribution with mean df+lambda and variance 2*df.  */
-  public synchronized double nextChiSq(int df,double lambda) {
+  public double nextChiSq(int df,double lambda) {
     return nextGamma(0.5*(double)df,2,lambda);
   }
 
   /** Return a random double drawn from a Beta distribution with mean a/(a+b) and variance ab/((a+b+1)(a+b)^2).  */
-  public synchronized double nextBeta(double alpha,double beta) {
+  public double nextBeta(double alpha,double beta) {
     if (alpha <= 0 || beta <= 0) {
       throw new IllegalArgumentException ("alpha and beta must be strictly positive.");
     }
